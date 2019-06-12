@@ -1,0 +1,62 @@
+
+  #include<iostream>
+using namespace std;
+
+int ways(int denominations[], int numDenominations, int value, int **output){
+    
+    
+    if(value==0){
+       return 1;
+   }
+    if(numDenominations==0){
+        return 0;
+    }
+    if(value<0){
+        return 0;
+    }
+    if(output[value][numDenominations]>-1){
+        return output[value][numDenominations];
+    }
+    int first=ways(denominations,numDenominations-1,value,output);
+    int second = ways(denominations,numDenominations,value-denominations[numDenominations-1],output);
+    
+    output[value][numDenominations]=first+second;
+    return first+second;
+    
+}  
+
+int countWaysToMakeChange(int denominations[], int numDenominations, int value){
+
+ 
+    int **output=new int*[value+1];
+    for(int i=0;i<=value;i++){
+     output[i]=new int[numDenominations+1];
+    }
+   
+    for(int i=0;i<=value;i++){
+        for(int j=0;j<=numDenominations;j++){
+            output[i][j]=-1;
+        }
+    }
+    return  ways(denominations, numDenominations, value,output);
+}
+
+
+int main(){
+
+  int numDenominations;
+  cin >> numDenominations;
+  int* denominations = new int[numDenominations];
+  for(int i = 0; i < numDenominations; i++){
+    cin >> denominations[i];
+  }
+  int value;
+  cin >> value;
+
+  cout << countWaysToMakeChange(denominations, numDenominations, value);
+
+}
+
+
+  
+    
